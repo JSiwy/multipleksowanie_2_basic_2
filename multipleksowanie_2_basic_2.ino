@@ -14,7 +14,7 @@
 #define data2Length 48  // długość linii 2 z danymi
 
 #include <Servo.h>
-#include "Nastawnik.h"
+#include "Nastawnik.h"// trzeba pobrać bibliotekę Vector z Arduino IDE
 
 Servo CH;
 Servo PG;
@@ -24,6 +24,7 @@ int MODE = UART; // tryb pracy
 
 // ----------------
 // NASTAWNIK
+// Obiekt klasy Nastawnik przechowuje pozycje nastawnika (końcówka "L" oznacza zmienną typu long)
 // ----------------
 Nastawnik nastawnik;
 long pozycje[] = {
@@ -102,11 +103,9 @@ volatile uint8_t doPCBase[20] = {0,0,0,0,0};
 // ----------------
 // VARIABLES
 // ----------------
-bool radiostate;
-bool prevstate;
-bool radio;
-bool fastSwitchOffPreviousState = 0;
-bool fastSwitchOnPreviousState = 0;
+bool radiostate; //stan przycisku radia
+bool prevstate; //stan przycisku radia
+bool radio; //zmienna od stanu radia (włącz/wyłącz)
 
 bool data1[data1Length];
 bool data2[data2Length];
@@ -158,7 +157,7 @@ void setup()
   digitalWrite(2, LOW);     //ustawienie stanu niskiego na pinie 2
   digitalWrite(3, LOW);     //ustawienie stanu niskiego na pinie 3
 
-  Serial.begin(115200);     //nawiązanie komunikacji z prędkością 115200b/s
+  Serial.begin(115200);     //nawiązanie komunikacji z prędkością 115200b/s (baud)
   Serial.setTimeout(10);
   while(!Serial){};     //czekanie do nawiązania komunikacji z komputerem
 
@@ -190,12 +189,12 @@ void loop()
   digitalWrite(A2, LOW);
   digitalWrite(A3, LOW);
 
-  writeToSerial();
-  
+  writeToSerial(); 
 }
 
 // ------------
 // setNastawnik()
+// Dodaje do wetora numer pozycji i jaka wartość z arduino mu odpowiada
 // ------------
 void setNastawnik() {
   nastawnik.addPosition(0 , { -285151487L  });
