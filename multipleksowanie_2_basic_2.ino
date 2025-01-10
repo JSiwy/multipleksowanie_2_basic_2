@@ -272,12 +272,15 @@ void readLine2() {
     data2[i] = digitalRead(dataPin2);
 
     if (i < 3) {
+      //pierwsze 3 elementy tablicy wskazują na ustawienie kierunku
       bitWrite(kierunek, i, digitalRead(dataPin2));      
     }
     if (i >= 3 && i < 8) {
+      // od 3 do 7 elementu przekazywany jest stan bocznika
       bitWrite(bocznikInternal, i - 3, digitalRead(dataPin2));
     }
     if (i >= 8) {
+      //od 8 elementu są dane dotyczące aktualnej pozycji nastawnika
       bitWrite(nastawnikValue, i - 8, digitalRead(dataPin2));
     }
 
@@ -328,6 +331,7 @@ void setMierniki() {
 // setManometry()
 // ------------
 void setManometry() {
+  //konfiguracja i zmapowanie serwomotorów 
   int CH_Value = 180 - map(zPC[11], 0, 255, 0, 360);
   int PG_Value = 180 - map(zPC[13], 0, 255, 0, 360);
   int ZG_Value = 180 - map(zPC[15], 0, 255, 0, 360);
@@ -371,10 +375,13 @@ void asignData() {
 // setRadio()
 // ------------
 void setRadio() {
+  //stan radia na 0
   radio = 0;
   prevstate = radiostate;
   delay(10);
+  //ustawienie stanu radia na przeciwny do otrzymanego z symulatora
   radiostate = !data1[30];
+  //jeżeli stan radia jest różny od od poprzedniego to ustaw radio na 1 (włącz)
   if(radiostate != prevstate){
     radio = 1;
   }
@@ -395,7 +402,7 @@ void setKierunek() {
 // setBocznik()
 // ------------
 void setBocznik() {
-  
+  // ustawnianie stanów pocznika na podstawie stanu krzywek z symulatora
   if (data2[6] && data2[7]) {
     doPC[11] = 0;
   }
@@ -427,7 +434,9 @@ void checkAndOutputNastawnik() {
   if (currentMillis - previousMillis >= interval)
   {
     previousMillis = currentMillis;
+    //pozyskanie numeru pozycji nastawnika na podstawie wartości z symulatora
     int pos = nastawnik.getPos(nastawnikValue);
+    //jeżeli pozycja jest większa to ustaw pozycję nastawnika na tą wartość w maszynie
     if (pozycja >= 0)
     {
       doPC[10] = pozycja;
@@ -439,12 +448,13 @@ void checkAndOutputNastawnik() {
 // writeToSerial()
 // ------------
 void writeToSerial() {
+  //standatdwy tryb pracy - UART
   if (MODE == UART) {
     while (!Serial.available()) {}
     Serial.readBytes((char*)zPC, 52);
     Serial.write((char*)doPC, 20);
   }
-
+  // debugowanie wartości z nastawnika (pozycji)
   if (MODE == POS) {
     for (int i = 0; i < 32; i++)
     {
@@ -455,11 +465,11 @@ void writeToSerial() {
     Serial.print(" => ");
     Serial.println(pozycja);
   }
-
+  // debugowanie komunikacji na bitach
   if (MODE == BITS) {
     showBits();
   }
-
+  // test lamp w pulpicie
   if(MODE==LAMP_TEST){
     lampTest();
   }
