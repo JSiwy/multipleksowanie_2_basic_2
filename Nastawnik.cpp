@@ -9,6 +9,7 @@ Nastawnik::Nastawnik() {
 
 //Dodaje pozycję do listy pozycji razem z indeksem
 void Nastawnik::addPosition(int index, long values[]) {
+  //Jeżeli indeks znajduje się w zakresie długości listy pozycji
   if (index >= 0 && index < positions.size()) {
     Vector<long> val;
     for (int i = 0; i < sizeof(values) / sizeof(values[0]); i++) {
