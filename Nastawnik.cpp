@@ -6,6 +6,7 @@ Nastawnik::Nastawnik() {
     positions[i].push_back({ -1 });
   }
 }
+
 //Dodaje pozycję do listy pozycji razem z indeksem
 void Nastawnik::addPosition(int index, long values[]) {
   if (index >= 0 && index < positions.size()) {
@@ -16,6 +17,7 @@ void Nastawnik::addPosition(int index, long values[]) {
     positions[index] = val;
   }
 }
+
 //Zwraca pozycję indeks pozycji na podstawie wartości
 int Nastawnik::getPos(long value) {
   for (int i = 0; i < positions.size(); i++) {
