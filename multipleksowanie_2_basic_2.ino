@@ -446,6 +446,7 @@ void checkAndOutputNastawnik() {
 
 // ------------
 // writeToSerial()
+// wybór trybu pracy arduino (sposobu wysyłania danych)
 // ------------
 void writeToSerial() {
   //standatdwy tryb pracy - UART
@@ -474,6 +475,9 @@ void writeToSerial() {
     lampTest();
   }
 }
+
+//PONIŻEJ ZNAJDUJĄ SIĘ KOMPONENTY WYKORZYSTYWANE PRZEZ SKRYPT
+//W TYM TESTY ORAZ SKRYPTY ODPOWIEDZIALNE ZA KOMUNIKACJE
 
 // ------------
 // showBits()
